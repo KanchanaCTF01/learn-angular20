@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Product } from '../models/product';
+import { ProductItemComponent } from '../productitem/productitem.component';
 
 @Component({
   selector: 'app-product-list',
@@ -7,7 +8,11 @@ import { Product } from '../models/product';
   styleUrls: ['./productlist.component.css']
 })
 export class ProductListComponent implements OnInit {
+
+  @ViewChildren(ProductItemComponent)
+  productItems: QueryList<ProductItemComponent>;
   products: Product[];
+
   constructor() { 
     this.products = [];
     this.products.push({
@@ -26,7 +31,11 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  selectedProduct(product: Product) {
-    alert(`Product ${product.name} selected`);
+  selectedProduct(productComponent: ProductItemComponent) {
+    alert(`Product ${productComponent.product.name} selected`);
+    this.productItems.forEach(p=> {
+      p.isSelected = false;
+    });
+    productComponent.isSelected = true;
   }
 }
